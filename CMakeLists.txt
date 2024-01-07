@@ -13,8 +13,12 @@ add_library(ImGui imconfig.h
                     imstb_truetype.h
                     imgui_demo.cpp)
 
-set(imgui_macro "__declspec(dllexport)")
-add_compile_definitions(IMGUI_API=${imgui_macro}) 
+if(WIN32)
+	set(imgui_macro "__declspec(dllexport)") 
+else()
+	set(imgui_macro, "__attribute__((visibility(\"default\")))")
+endif(WIN32)
 
+add_compile_definitions(IMGUI_API=${imgui_macro})
 
 install(TARGETS ImGui RUNTIME DESTINATION /bin/${CMAKE_PROJECT_NAME})
